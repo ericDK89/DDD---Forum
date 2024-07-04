@@ -11,6 +11,12 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^20.14.9",
+    "cz-conventional-changelog": "^3.3.0",
     "typescript": "^5.5.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
