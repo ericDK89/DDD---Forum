@@ -4,6 +4,7 @@ import { AnswersRepository } from '../repositories/answers-repository'
 import { AnswerQuestionUseCase } from './answer-question'
 
 class FakeAnswersRepository implements AnswersRepository {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create(answer: Answer): Promise<void> {}
 }
 
