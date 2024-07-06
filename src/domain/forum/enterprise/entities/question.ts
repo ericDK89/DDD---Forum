@@ -7,10 +7,10 @@ type QuestionProps = {
   authorId: UniqueEntityId
   title: string
   bestAnswerId?: UniqueEntityId
-  slug: Slug
+  slug?: Slug
   content: string
   createdAt?: Date
-  updatedAt: Date
+  updatedAt?: Date
 }
 
 export class Question extends Entity<QuestionProps> {

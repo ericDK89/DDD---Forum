@@ -8,6 +8,10 @@ type AnswerQuestionUseCaseRequest = {
   content: string
 }
 
+type AnswerQuestionUseCaseResponse = {
+  answer: Answer
+}
+
 export class AnswerQuestionUseCase {
   private answerRepository: AnswersRepository
 
@@ -19,15 +23,17 @@ export class AnswerQuestionUseCase {
     instructorId,
     questionId,
     content,
-  }: AnswerQuestionUseCaseRequest) {
+  }: AnswerQuestionUseCaseRequest): Promise<AnswerQuestionUseCaseResponse> {
     const answer = Answer.create({
       content,
       authorId: instructorId,
       questionId,
     })
 
-    this.answerRepository.create(answer)
+    await this.answerRepository.create(answer)
 
-    return answer
+    return {
+      answer,
+    }
   }
 }
