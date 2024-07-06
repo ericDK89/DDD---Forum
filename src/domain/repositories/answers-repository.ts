@@ -1,5 +1,5 @@
-import { Answer } from "../entities/answer";
+import { Answer } from '../entities/answer'
 
 export type AnswersRepository = {
-    create(answer: Answer): Promise<void>
+  create(answer: Answer): Promise<void>
 }

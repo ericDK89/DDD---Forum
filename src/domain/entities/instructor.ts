@@ -1,11 +1,11 @@
-import { Entity } from "../../core/entities/entity"
+import { Entity } from '../../core/entities/entity'
 
 type InstructorProps = {
-    name: string
+  name: string
 }
 
 export class Instructor extends Entity<InstructorProps> {
-    static create(props: InstructorProps, id?: string) {
-        return new Instructor(props, id)
-    }
+  static create(props: InstructorProps, id?: string) {
+    return new Instructor(props, id)
+  }
 }
