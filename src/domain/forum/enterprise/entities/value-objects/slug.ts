@@ -27,6 +27,6 @@ export class Slug {
   }
 
   get value() {
-    return this._value
+    return this._value.toString()
   }
 }

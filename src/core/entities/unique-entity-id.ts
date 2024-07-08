@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 
 export class UniqueEntityId {
-  readonly _value: string
+  private _value: string
 
   private constructor(value?: string) {
     this._value = value ?? randomUUID()

@@ -5,7 +5,7 @@ import { AnswerQuestionUseCase } from './answer-question'
 let repository: InMemoryAnswersRepository
 let useCase: AnswerQuestionUseCase
 
-describe('Answers Tests', () => {
+describe('Answers Questions Tests', () => {
   beforeEach(() => {
     repository = new InMemoryAnswersRepository()
     useCase = new AnswerQuestionUseCase(repository)
