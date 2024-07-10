@@ -3,6 +3,7 @@ import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
 import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { EditQuestionUseCase } from './edit-question'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 let repository: InMemoryQuestionsRepository
 let useCase: EditQuestionUseCase
@@ -50,13 +51,14 @@ describe('Edit Questions', () => {
 
     await repository.create(newQuestion)
 
-    await expect(
-      useCase.execute({
-        questionId: 'question-1',
-        authorId: 'another-author-id',
-        content: 'New Update question',
-        title: 'Update Question',
-      }),
-    ).rejects.toThrow(Error)
+    const result = await useCase.execute({
+      questionId: newQuestion.id.value,
+      authorId: 'another-author-id',
+      content: 'New Update question',
+      title: 'Update Question',
+    })
+
+    expect(result.isError).toBeTruthy()
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })

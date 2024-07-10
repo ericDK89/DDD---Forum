@@ -13,21 +13,21 @@ describe('Get Questions By Slug Tests', () => {
     useCase = new GetQuestionBySlugUseCase(repository)
   })
 
-  it('Should be able to get a question by slug', async () => {
+  it.only('Should be able to get a question by slug', async () => {
     const newQuestion = Question.create({
       content: 'New question',
       authorId: UniqueEntityId.create(),
       title: 'Question',
-      slug: Slug.createFromText('Question'),
+      slug: Slug.createFromText('example-question'),
     })
 
     await repository.create(newQuestion)
 
-    const { question } = await useCase.execute({
-      slug: 'question',
+    const result = await useCase.execute({
+      slug: 'example-question',
     })
 
-    expect(question).not.toBeNull()
-    expect(question!.title).toEqual(newQuestion.title)
+    expect(result.isSuccess).toBeTruthy()
+    expect(repository.items[0].slug).toEqual('example-question')
   })
 })

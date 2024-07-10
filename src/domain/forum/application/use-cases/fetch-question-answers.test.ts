@@ -47,13 +47,13 @@ describe('Fetch Question Answers', () => {
 
     repository.create(answerThree)
 
-    const { answers } = await useCase.execute({
+    const result = await useCase.execute({
       questionId: question.id.value,
       page: 1,
     })
 
-    expect(answers).not.toBeNull()
-    expect(answers).toHaveLength(3)
+    expect(result.value?.answers).not.toBeNull()
+    expect(result.value?.answers).toHaveLength(3)
   })
 
   it('Should be able to fetch paginated question answers', async () => {
@@ -67,11 +67,11 @@ describe('Fetch Question Answers', () => {
       await repository.create(answer)
     }
 
-    const { answers } = await useCase.execute({
+    const result = await useCase.execute({
       questionId: 'question-1',
       page: 2,
     })
 
-    expect(answers).toHaveLength(2)
+    expect(result.value?.answers).toHaveLength(2)
   })
 })

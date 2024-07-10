@@ -51,11 +51,11 @@ describe('Fetch Answer Comments', () => {
       await repository.create(answerComment)
     }
 
-    const { answerComments } = await useCase.execute({
+    const result = await useCase.execute({
       answerId: 'answer-1',
       page: 2,
     })
 
-    expect(answerComments).toHaveLength(2)
+    expect(result.value?.answerComments).toHaveLength(2)
   })
 })

@@ -5,6 +5,7 @@ import { Answer } from '../../enterprise/entities/answer'
 import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { ChooseQuestionBestAnswerQuestionUseCase } from './choose-question-best-answer'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 let questionsRepository: InMemoryQuestionsRepository
 let answersRepository: InMemoryAnswersRepository
@@ -70,11 +71,12 @@ describe('Choose Question Best Answer', () => {
 
     await answersRepository.create(answer)
 
-    await expect(
-      useCase.execute({
-        answerId: answer.id.value,
-        authorId: 'another-author-id',
-      }),
-    ).rejects.toThrow(Error)
+    const result = await useCase.execute({
+      answerId: answer.id.value,
+      authorId: 'another-author-id',
+    })
+
+    expect(result.isError()).toBeTruthy()
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })

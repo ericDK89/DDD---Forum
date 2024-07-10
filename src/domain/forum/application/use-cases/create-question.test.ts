@@ -12,17 +12,18 @@ describe('Create Questions Tests', () => {
   })
 
   it('Should be able to create an question', async () => {
-    const { question } = await useCase.execute({
+    const result = await useCase.execute({
       content: 'New question',
       authorId: '1',
       title: 'Question',
     })
 
-    expect(question).not.toBeNull()
-    expect(question.content).toEqual('New question')
-    expect(question.authorId).toBeInstanceOf(UniqueEntityId)
-    expect(question.slug).not.toBeNull()
+    expect(result.isSuccess()).toBeTruthy()
+    expect(result).not.toBeNull()
+    expect(result.value?.question.content).toEqual('New question')
+    expect(result.value?.question.authorId).toBeInstanceOf(UniqueEntityId)
+    expect(result.value?.question.slug).not.toBeNull()
     expect(repository.items.length).toBe(1)
-    expect(repository.items[0].id).toEqual(question.id)
+    expect(repository.items[0].id).toEqual(result.value?.question.id)
   })
 })

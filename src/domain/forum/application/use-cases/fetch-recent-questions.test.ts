@@ -42,12 +42,12 @@ describe('Fetch Recent Questions', () => {
     await repository.create(questionTwo)
     await repository.create(questionThree)
 
-    const { questions } = await useCase.execute({
+    const result = await useCase.execute({
       page: 1,
     })
 
-    expect(questions).not.toBeNull()
-    expect(questions).toEqual([
+    expect(result.value?.questions).not.toBeNull()
+    expect(result.value?.questions).toEqual([
       expect.objectContaining({ createdAt: new Date('2023, 1, 22') }),
       expect.objectContaining({ createdAt: new Date('2023, 1, 21') }),
       expect.objectContaining({ createdAt: new Date('2023, 1, 20') }),
@@ -67,10 +67,10 @@ describe('Fetch Recent Questions', () => {
       await repository.create(question)
     }
 
-    const { questions } = await useCase.execute({
+    const result = await useCase.execute({
       page: 2,
     })
 
-    expect(questions).toHaveLength(2)
+    expect(result.value?.questions).toHaveLength(2)
   })
 })

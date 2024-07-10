@@ -1,3 +1,4 @@
+import { Either, success } from '../../../../core/either'
 import { Answer } from '../../enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
 
@@ -6,9 +7,12 @@ type FetchQuestionAnswersUseCaseRequest = {
   questionId: string
 }
 
-type FetchQuestionAnswersUseCaseResponse = {
-  answers: Answer[]
-}
+type FetchQuestionAnswersUseCaseResponse = Either<
+  null,
+  {
+    answers: Answer[]
+  }
+>
 
 export class FetchQuestionAnswersUseCase {
   private answersRepository: AnswersRepository
@@ -28,8 +32,6 @@ export class FetchQuestionAnswersUseCase {
       },
     )
 
-    return {
-      answers,
-    }
+    return success({ answers })
   }
 }

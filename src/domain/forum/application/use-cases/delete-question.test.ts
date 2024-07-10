@@ -3,6 +3,7 @@ import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
 import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { DeleteQuestionUseCase } from './delete-question'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 let repository: InMemoryQuestionsRepository
 let useCase: DeleteQuestionUseCase
@@ -47,11 +48,12 @@ describe('Delete Questions By Slug Tests', () => {
 
     await repository.create(newQuestion)
 
-    await expect(
-      useCase.execute({
-        questionId: 'question-1',
-        authorId: 'another-author-id',
-      }),
-    ).rejects.toThrow(Error)
+    const result = await useCase.execute({
+      questionId: newQuestion.id.value,
+      authorId: 'another-author-id',
+    })
+
+    expect(result.isError).toBeTruthy()
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })
