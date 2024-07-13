@@ -1,17 +1,26 @@
+import { InMemoryQuestionAttachmentRepository } from '../../../../../test/repositorires/in-memory-question-attachment-repository'
 import { InMemoryQuestionsRepository } from '../../../../../test/repositorires/in-memory-questions-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
 import { Question } from '../../enterprise/entities/question'
+import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { DeleteQuestionUseCase } from './delete-question'
 import { NotAllowedError } from './errors/not-allowed-error'
 
-let repository: InMemoryQuestionsRepository
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository
 let useCase: DeleteQuestionUseCase
 
 describe('Delete Questions By Slug Tests', () => {
   beforeEach(() => {
-    repository = new InMemoryQuestionsRepository()
-    useCase = new DeleteQuestionUseCase(repository)
+    inMemoryQuestionAttachmentRepository =
+      new InMemoryQuestionAttachmentRepository()
+
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentRepository,
+    )
+
+    useCase = new DeleteQuestionUseCase(inMemoryQuestionsRepository)
   })
 
   it('Should be able to delete a question', async () => {
@@ -25,14 +34,26 @@ describe('Delete Questions By Slug Tests', () => {
       UniqueEntityId.create('question-1'),
     )
 
-    await repository.create(newQuestion)
+    await inMemoryQuestionsRepository.create(newQuestion)
+
+    inMemoryQuestionAttachmentRepository.items.push(
+      QuestionAttachment.create({
+        quetionsId: newQuestion.id,
+        attachmentId: UniqueEntityId.create('1'),
+      }),
+      QuestionAttachment.create({
+        quetionsId: newQuestion.id,
+        attachmentId: UniqueEntityId.create('2'),
+      }),
+    )
 
     await useCase.execute({
       questionId: newQuestion.id.value,
       authorId: newQuestion.authorId.value,
     })
 
-    expect(repository.items).toHaveLength(0)
+    expect(inMemoryQuestionsRepository.items).toHaveLength(0)
+    expect(inMemoryQuestionAttachmentRepository.items).toHaveLength(0)
   })
 
   it('Should not be able to delete a question from another user', async () => {
@@ -46,7 +67,7 @@ describe('Delete Questions By Slug Tests', () => {
       UniqueEntityId.create(),
     )
 
-    await repository.create(newQuestion)
+    await inMemoryQuestionsRepository.create(newQuestion)
 
     const result = await useCase.execute({
       questionId: newQuestion.id.value,

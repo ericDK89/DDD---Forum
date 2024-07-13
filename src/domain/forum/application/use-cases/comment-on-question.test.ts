@@ -1,3 +1,4 @@
+import { InMemoryQuestionAttachmentRepository } from '../../../../../test/repositorires/in-memory-question-attachment-repository'
 import { InMemoryQuestionCommentsRepository } from '../../../../../test/repositorires/in-memory-question-comments-repository'
 import { InMemoryQuestionsRepository } from '../../../../../test/repositorires/in-memory-questions-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
@@ -5,13 +6,19 @@ import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { CommentOnQuestionUseCase } from './comment-on-question'
 
+let questionAttachmentsRepository: InMemoryQuestionAttachmentRepository
 let questionsRepository: InMemoryQuestionsRepository
 let questionCommentsRepository: InMemoryQuestionCommentsRepository
 let useCase: CommentOnQuestionUseCase
 
 describe('Comment On Question', () => {
   beforeEach(() => {
-    questionsRepository = new InMemoryQuestionsRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentRepository()
+
+    questionsRepository = new InMemoryQuestionsRepository(
+      questionAttachmentsRepository,
+    )
+
     questionCommentsRepository = new InMemoryQuestionCommentsRepository()
     useCase = new CommentOnQuestionUseCase(
       questionsRepository,

@@ -1,15 +1,18 @@
+import { InMemoryQuestionAttachmentRepository } from '../../../../../test/repositorires/in-memory-question-attachment-repository'
 import { InMemoryQuestionsRepository } from '../../../../../test/repositorires/in-memory-questions-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
 import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { GetQuestionBySlugUseCase } from './get-question-by-slug'
 
+let questionAttachmentsRepository: InMemoryQuestionAttachmentRepository
 let repository: InMemoryQuestionsRepository
 let useCase: GetQuestionBySlugUseCase
 
 describe('Get Questions By Slug Tests', () => {
   beforeEach(() => {
-    repository = new InMemoryQuestionsRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentRepository()
+    repository = new InMemoryQuestionsRepository(questionAttachmentsRepository)
     useCase = new GetQuestionBySlugUseCase(repository)
   })
 

@@ -1,17 +1,26 @@
+import { InMemoryAnswerAttachmentRepository } from '../../../../../test/repositorires/in-memory-answer-attachments-repository'
 import { InMemoryAnswerCommentsRepository } from '../../../../../test/repositorires/in-memory-answer-comments-repository'
 import { InMemoryAnswersRepository } from '../../../../../test/repositorires/in-memory-answers-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
 import { Answer } from '../../enterprise/entities/answer'
 import { CommentOnAnswerUseCase } from './comment-on-answer'
 
+let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository
 let answersRepository: InMemoryAnswersRepository
 let answerCommentsRepository: InMemoryAnswerCommentsRepository
 let useCase: CommentOnAnswerUseCase
 
 describe('Comment On Answer', () => {
   beforeEach(() => {
-    answersRepository = new InMemoryAnswersRepository()
+    inMemoryAnswerAttachmentRepository =
+      new InMemoryAnswerAttachmentRepository()
+
+    answersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentRepository,
+    )
+
     answerCommentsRepository = new InMemoryAnswerCommentsRepository()
+
     useCase = new CommentOnAnswerUseCase(
       answersRepository,
       answerCommentsRepository,

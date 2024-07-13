@@ -1,4 +1,6 @@
+import { InMemoryAnswerAttachmentRepository } from '../../../../../test/repositorires/in-memory-answer-attachments-repository'
 import { InMemoryAnswersRepository } from '../../../../../test/repositorires/in-memory-answers-repository'
+import { InMemoryQuestionAttachmentRepository } from '../../../../../test/repositorires/in-memory-question-attachment-repository'
 import { InMemoryQuestionsRepository } from '../../../../../test/repositorires/in-memory-questions-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
 import { Answer } from '../../enterprise/entities/answer'
@@ -7,14 +9,27 @@ import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { ChooseQuestionBestAnswerQuestionUseCase } from './choose-question-best-answer'
 import { NotAllowedError } from './errors/not-allowed-error'
 
+let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository
+let questionAttachmentsRepository: InMemoryQuestionAttachmentRepository
 let questionsRepository: InMemoryQuestionsRepository
 let answersRepository: InMemoryAnswersRepository
 let useCase: ChooseQuestionBestAnswerQuestionUseCase
 
 describe('Choose Question Best Answer', () => {
   beforeEach(() => {
-    questionsRepository = new InMemoryQuestionsRepository()
-    answersRepository = new InMemoryAnswersRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentRepository()
+
+    questionsRepository = new InMemoryQuestionsRepository(
+      questionAttachmentsRepository,
+    )
+
+    inMemoryAnswerAttachmentRepository =
+      new InMemoryAnswerAttachmentRepository()
+
+    answersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentRepository,
+    )
+
     useCase = new ChooseQuestionBestAnswerQuestionUseCase(
       questionsRepository,
       answersRepository,

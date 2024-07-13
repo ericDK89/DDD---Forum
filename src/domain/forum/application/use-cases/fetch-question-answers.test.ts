@@ -1,3 +1,4 @@
+import { InMemoryAnswerAttachmentRepository } from '../../../../../test/repositorires/in-memory-answer-attachments-repository'
 import { InMemoryAnswersRepository } from '../../../../../test/repositorires/in-memory-answers-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
 import { Answer } from '../../enterprise/entities/answer'
@@ -5,12 +6,14 @@ import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { FetchQuestionAnswersUseCase } from './fetch-question-answers'
 
+let answerAttachmentsRepository: InMemoryAnswerAttachmentRepository
 let repository: InMemoryAnswersRepository
 let useCase: FetchQuestionAnswersUseCase
 
 describe('Fetch Question Answers', () => {
   beforeEach(() => {
-    repository = new InMemoryAnswersRepository()
+    answerAttachmentsRepository = new InMemoryAnswerAttachmentRepository()
+    repository = new InMemoryAnswersRepository(answerAttachmentsRepository)
     useCase = new FetchQuestionAnswersUseCase(repository)
   })
 
