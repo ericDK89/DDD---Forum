@@ -1,11 +1,11 @@
 import { InMemoryQuestionAttachmentRepository } from '../../../../../test/repositorires/in-memory-question-attachment-repository'
 import { InMemoryQuestionsRepository } from '../../../../../test/repositorires/in-memory-questions-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
+import { NotAllowedError } from '../../../../core/errors/not-allowed-error'
 import { Question } from '../../enterprise/entities/question'
 import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { EditQuestionUseCase } from './edit-question'
-import { NotAllowedError } from './errors/not-allowed-error'
 
 let questionsRepository: InMemoryQuestionsRepository
 let questionAttachmentsRepository: InMemoryQuestionAttachmentRepository

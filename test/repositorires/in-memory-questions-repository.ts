@@ -1,3 +1,4 @@
+import { DomainEvents } from '../../src/core/events/domain-events'
 import { PaginationParams } from '../../src/core/repositories/pagination-params'
 import { QuestionAttachmentsRepository } from '../../src/domain/forum/application/repositories/question-attachments-repository'
 import { QuestionsRepository } from '../../src/domain/forum/application/repositories/questions-repository'
@@ -13,6 +14,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
 
   async create(question: Question) {
     this._items.push(question)
+    DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
   async findBySlug(slug: string) {
@@ -26,6 +28,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   async save(question: Question): Promise<void> {
     const itemToUpdateIndex = this._items.indexOf(question)
     this._items[itemToUpdateIndex] = question
+    DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
   async findManyRecent({ page }: PaginationParams) {

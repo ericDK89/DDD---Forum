@@ -3,11 +3,11 @@ import { InMemoryAnswersRepository } from '../../../../../test/repositorires/in-
 import { InMemoryQuestionAttachmentRepository } from '../../../../../test/repositorires/in-memory-question-attachment-repository'
 import { InMemoryQuestionsRepository } from '../../../../../test/repositorires/in-memory-questions-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
+import { NotAllowedError } from '../../../../core/errors/not-allowed-error'
 import { Answer } from '../../enterprise/entities/answer'
 import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { ChooseQuestionBestAnswerQuestionUseCase } from './choose-question-best-answer'
-import { NotAllowedError } from './errors/not-allowed-error'
 
 let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository
 let questionAttachmentsRepository: InMemoryQuestionAttachmentRepository

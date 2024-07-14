@@ -1,10 +1,10 @@
 import { InMemoryAnswerAttachmentRepository } from '../../../../../test/repositorires/in-memory-answer-attachments-repository'
 import { InMemoryAnswersRepository } from '../../../../../test/repositorires/in-memory-answers-repository'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
+import { NotAllowedError } from '../../../../core/errors/not-allowed-error'
 import { Answer } from '../../enterprise/entities/answer'
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
 import { EditAnswerUseCase } from './edit-answer'
-import { NotAllowedError } from './errors/not-allowed-error'
 
 let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository
 let repository: InMemoryAnswersRepository

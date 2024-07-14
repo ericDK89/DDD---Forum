@@ -1,5 +1,6 @@
-import { Entity } from '../../../../core/entities/entity'
+import { AggregateRoot } from '../../../../core/entities/aggregate-root'
 import { UniqueEntityId } from '../../../../core/entities/unique-entity-id'
+import { AnswerCreatedEvent } from '../events/answer-created-events'
 import { AnswerAttachmentList } from './answer-attachment-list'
 
 type AnswerProps = {
@@ -11,9 +12,9 @@ type AnswerProps = {
   attatchments?: AnswerAttachmentList
 }
 
-export class Answer extends Entity<AnswerProps> {
+export class Answer extends AggregateRoot<AnswerProps> {
   static create(props: AnswerProps, id?: UniqueEntityId) {
-    return new Answer(
+    const answer = new Answer(
       {
         ...props,
         attachments: props.attatchments ?? new AnswerAttachmentList(),
@@ -21,6 +22,13 @@ export class Answer extends Entity<AnswerProps> {
       },
       id,
     )
+
+    // * If it is a new Answer (has no id)
+    if (!id) {
+      answer.addDomainEvent(new AnswerCreatedEvent(answer))
+    }
+
+    return answer
   }
 
   get excerpt() {
